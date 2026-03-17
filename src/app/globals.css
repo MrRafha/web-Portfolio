@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0f;
+  --background-elevated: #11111a;
+  --foreground: #f5f7ff;
+  --muted: #c9cde0;
+  --accent: #5865f2;
+  --accent-soft: #a0a8ff;
 }
 
 @theme inline {
@@ -14,13 +18,67 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0a0a0f;
+    --background-elevated: #11111a;
+    --foreground: #f5f7ff;
+    --muted: #c9cde0;
+    --accent: #5865f2;
+    --accent-soft: #a0a8ff;
   }
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at 10% 0%, rgb(88 101 242 / 22%), transparent 36%),
+    radial-gradient(circle at 90% 16%, rgb(160 168 255 / 14%), transparent 40%),
+    linear-gradient(180deg, #0a0a0f 0%, #0d0d14 45%, #0a0a0f 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
+  min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+[data-flow-section][data-flow-state="active"] {
+  --flow-accent-opacity: 1;
+}
+
+[data-flow-section][data-flow-state="next"] {
+  --flow-accent-opacity: 0.65;
+}
+
+[data-flow-section] {
+  --flow-accent-opacity: 0;
+  transition: opacity 300ms ease, transform 300ms ease;
+  will-change: transform, opacity;
+}
+
+[data-flow-section][data-flow-state="active"] {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+[data-flow-section][data-flow-state="next"] {
+  opacity: 0.9;
+  transform: translateY(14px);
+}
+
+[data-flow-section][data-flow-state="upcoming"] {
+  opacity: 0.8;
+  transform: translateY(20px);
+}
+
+[data-flow-section][data-flow-state="past"] {
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
