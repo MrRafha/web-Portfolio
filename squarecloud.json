@@ -1,0 +1,6 @@
+{
+  "name": "Meu Portfólio",
+  "main": "main_file.js",
+  "memory": 512,
+  "autorestart": true
+}
