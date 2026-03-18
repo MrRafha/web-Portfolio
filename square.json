@@ -1,0 +1,5 @@
+{
+  "main": "npm start",
+  "memory": 512,
+  "startup": "npm run build && npm start"
+}
