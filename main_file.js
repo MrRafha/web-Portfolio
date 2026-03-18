@@ -1,9 +1,25 @@
 const { createServer } = require("http");
 const { parse } = require("url");
-const next = require("next");
+const { execSync } = require("child_process");
+const fs = require("fs");
+const path = require("path");
 
-const dev = false;
 const port = parseInt(process.env.PORT || "3000", 10);
+
+// Verificar se .next existe, se não, fazer o build
+const nextDir = path.join(__dirname, ".next");
+if (!fs.existsSync(nextDir)) {
+  console.log("📦 Building application...");
+  try {
+    execSync("npm run build", { stdio: "inherit" });
+  } catch (error) {
+    console.error("Build failed:", error);
+    process.exit(1);
+  }
+}
+
+const next = require("next");
+const dev = false;
 
 const app = next({ dev, dir: "." });
 const handle = app.getRequestHandler();
