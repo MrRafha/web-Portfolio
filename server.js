@@ -3,10 +3,9 @@ const { parse } = require("url");
 const next = require("next");
 
 const dev = false;
-const hostname = "localhost";
 const port = parseInt(process.env.PORT || "3000", 10);
 
-const app = next({ dev });
+const app = next({ dev, dir: "." });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
@@ -19,8 +18,8 @@ app.prepare().then(() => {
       res.statusCode = 500;
       res.end("internal server error");
     }
-  }).listen(port, (err) => {
-    if (err) throw err;
-    console.log(`> Ready on http://${hostname}:${port}`);
+  }).listen(port, () => {
+    console.log(`✓ Server running on port ${port}`);
   });
 });
+

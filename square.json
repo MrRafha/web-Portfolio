@@ -1,7 +1,0 @@
-{
-  "main": "server.js",
-  "memory": 512,
-  "install": "npm install",
-  "build": "npm run build",
-  "start": "node server.js"
-}
