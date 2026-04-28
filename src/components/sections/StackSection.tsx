@@ -1,138 +1,93 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { SectionTitle } from "@/components/sections/SectionTitle";
-import { techGroups } from "@/data/portfolio";
-
-function ProficiencyBar({ value, delay, triggered }: { value: number; delay: number; triggered: boolean }) {
-  const fillRef = useRef<HTMLDivElement>(null);
-  const didAnimate = useRef(false);
-
-  useEffect(() => {
-    const fill = fillRef.current;
-    if (!fill || !triggered || didAnimate.current) return;
-    didAnimate.current = true;
-    setTimeout(() => {
-      fill.style.setProperty("--proficiency", String(value / 100));
-      fill.classList.add("animated");
-    }, delay);
-  }, [triggered, value, delay]);
-
-  return (
-    <div className="mt-3 mb-1">
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-xs uppercase tracking-[0.14em]" style={{ color: "var(--foreground-subtle)" }}>
-          Competências ativas
-        </span>
-        <span className="text-xs font-mono" style={{ color: "var(--accent-soft)" }}>
-          {value}%
-        </span>
-      </div>
-      <div className="h-1 w-full rounded-full overflow-hidden" style={{ background: "var(--border)" }}>
-        <div
-          ref={fillRef}
-          className="h-full rounded-full proficiency-bar-fill"
-          style={{
-            background: "linear-gradient(90deg, var(--accent), var(--accent-soft))",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
 export function StackSection() {
-  const [triggered, setTriggered] = useState(false);
-
-  useEffect(() => {
-    function onSectionSignal(e: Event) {
-      const detail = (e as CustomEvent).detail;
-      if (detail?.activeSection === "stack") setTriggered(true);
-    }
-    window.addEventListener("portfolio:section-signal", onSectionSignal as EventListener);
-    return () => window.removeEventListener("portfolio:section-signal", onSectionSignal as EventListener);
-  }, []);
+  const items = [
+    { cat: "FRONTEND · UI", glyph: "01", title: "React & Next.js", desc: "Interfaces performáticas com clareza, consistência visual e foco em uso real." },
+    { cat: "LINGUAGEM",     glyph: "02", title: "TypeScript",       desc: "Tipos como ferramenta de design — aplicação tipada de ponta a ponta." },
+    { cat: "ESTILO",        glyph: "03", title: "Tailwind & shadcn/ui", desc: "Sistemas de componentes consistentes, acessíveis e fáceis de evoluir." },
+    { cat: "DADOS",         glyph: "04", title: "Prisma · NeonDB",  desc: "Modelagem, autenticação e persistência prontas para escalar." },
+    { cat: "BACK-END",      glyph: "05", title: "Node.js & APIs",   desc: "APIs REST e camadas de serviço pensadas para evolução contínua." },
+    { cat: "ENTREGA",       glyph: "06", title: "Vercel · Docker",  desc: "Versionamento, deploy e empacotamento para ambientes reais." },
+    { cat: "FERRAMENTAS",   glyph: "07", title: "Git & GitHub",     desc: "Fluxo de trabalho versionado, com PRs, revisão e CI integrados." },
+    { cat: "EXTRAS",        glyph: "08", title: "Flutter · Java · Python", desc: "Base complementar para mobile, automação e bots de comunidade." },
+  ];
 
   return (
-    <section className="mx-auto w-full max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
-      <SectionTitle
-        eyebrow="Stack"
-        title="Base técnica completa"
-        description="Uma organização clara das tecnologias que sustentam meus projetos atuais e a direção que quero fortalecer no meu portfólio."
-      />
+    <>
+      <style>{`
+        h2.section-title {
+          font-family: var(--font-sans);
+          font-weight: 600;
+          font-size: clamp(32px, 4.6vw, 56px);
+          letter-spacing: -0.02em;
+          line-height: 1.05;
+          margin: 0 0 18px;
+        }
+        .section-lede {
+          color: var(--ink-soft);
+          max-width: 60ch;
+          font-size: 17px;
+        }
+        .stack-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1px;
+          background: var(--line);
+          border: 1px solid var(--line);
+          margin-top: 48px;
+        }
+        @media (max-width: 900px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px) { .stack-grid { grid-template-columns: 1fr; } }
+        .stack-cell {
+          background: rgba(13,20,40,0.55);
+          padding: 24px 22px;
+          min-height: 150px;
+          display: flex; flex-direction: column; justify-content: space-between;
+          transition: background 200ms ease;
+        }
+        .stack-cell:hover { background: rgba(18,27,53,0.85); }
+        .stack-cell-top {
+          display: flex; justify-content: space-between; align-items: center;
+          font-family: var(--font-mono); font-size: 11px; color: var(--ink-mute);
+          letter-spacing: 0.1em;
+        }
+        .stack-glyph {
+          width: 22px; height: 22px; border: 1px solid var(--line-2);
+          display: grid; place-items: center;
+          color: var(--moon); font-family: var(--font-mono); font-size: 11px;
+        }
+        .stack-cell h3 {
+          font-size: 22px; font-weight: 500; letter-spacing: -0.01em;
+          margin: 18px 0 6px; color: var(--ink);
+        }
+        .stack-cell p {
+          margin: 0; color: var(--ink-soft); font-size: 14px;
+        }
+      `}</style>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-2">
-        {techGroups.map((group, i) => (
-          <div
-            key={group.title}
-            className="rounded-[24px] p-5 backdrop-blur transition-all duration-300 hover:scale-[1.01]"
-            style={{
-              border: "1px solid var(--border)",
-              background:
-                "linear-gradient(160deg, var(--accent-bg) 0%, var(--background-elevated) 60%, var(--background-surface) 100%)",
-              boxShadow: "var(--shadow-card)",
-            }}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <h3 className="text-base font-semibold" style={{ color: "var(--foreground)" }}>
-                {group.title}
-              </h3>
-              <span
-                className="rounded-full px-2.5 py-0.5 text-xs font-medium shrink-0"
-                style={{
-                  border: "1px solid var(--border-accent)",
-                  background: "var(--accent-bg)",
-                  color: "var(--accent-soft)",
-                }}
-              >
-                {group.focus}
-              </span>
-            </div>
+      <section className="panel" id="stack">
+        <div className="shell">
+          <div className="eyebrow reveal">02 — stack</div>
+          <h2 className="section-title reveal">Ferramentas com as quais construo todos os dias.</h2>
+          <p className="section-lede reveal">
+            Escolho a tecnologia certa para o problema, mas tenho preferências.
+            Estas são as ferramentas que conheço a fundo.
+          </p>
 
-            <p className="mt-3 text-xs leading-5" style={{ color: "var(--foreground-muted)" }}>
-              {group.summary}
-            </p>
-
-            <ProficiencyBar value={group.proficiency} delay={i * 150} triggered={triggered} />
-
-            <div className="mt-3 h-px w-full" style={{ background: "var(--border)" }} />
-
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              {group.items.map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full px-2.5 py-0.5 text-xs font-mono"
-                  style={{
-                    border: "1px solid var(--border-accent)",
-                    background: "var(--accent-bg)",
-                    color: "var(--accent-soft)",
-                  }}
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
+          <div className="stack-grid">
+            {items.map((item) => (
+              <div className="stack-cell reveal" key={item.glyph}>
+                <div className="stack-cell-top">
+                  <span>{item.cat}</span>
+                  <span className="stack-glyph">{item.glyph}</span>
+                </div>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-
-      {/* CTA de transição para Contato */}
-      <div className="mt-10 flex flex-col items-center gap-3 text-center">
-        <p className="text-sm" style={{ color: "var(--foreground-muted)" }}>
-          Quer trabalhar com essa stack?
-        </p>
-        <a
-          href="#contato"
-          className="rounded-xl px-5 py-2.5 text-sm font-medium transition-all duration-200 hover:scale-[1.02]"
-          style={{
-            border: "1px solid var(--border-accent)",
-            background: "var(--accent-bg)",
-            color: "var(--accent-soft)",
-          }}
-        >
-          Vamos conversar →
-        </a>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }

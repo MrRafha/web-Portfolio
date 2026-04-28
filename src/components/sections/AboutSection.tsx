@@ -1,145 +1,207 @@
-import Image from "next/image";
-import { profile, stats } from "@/data/portfolio";
-
 export function AboutSection() {
   return (
-    <section className="mx-auto w-full max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
-      <div className="grid gap-6 lg:grid-cols-[1fr_1.5fr]">
+    <>
+      <style>{`
+        .panel {
+          padding: clamp(80px, 14vh, 160px) 0;
+          position: relative;
+        }
+        .shell {
+          width: var(--shell);
+          margin: 0 auto;
+        }
+        .eyebrow {
+          font-family: var(--font-mono);
+          font-size: 12px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: var(--moon);
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 18px;
+        }
+        .eyebrow::before {
+          content: "";
+          width: 22px;
+          height: 1px;
+          background: var(--moon);
+        }
+        .about-grid {
+          display: grid;
+          grid-template-columns: 360px 1fr;
+          gap: clamp(32px, 6vw, 80px);
+          align-items: start;
+        }
+        @media (max-width: 820px) {
+          .about-grid { grid-template-columns: 1fr; }
+        }
+        .photo-frame {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 4 / 5;
+          border-radius: 4px;
+          overflow: hidden;
+          background:
+            repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0 8px, rgba(255,255,255,0.0) 8px 16px),
+            linear-gradient(180deg, #1a2444, #0e1530);
+          border: 1px solid var(--line-2);
+          box-shadow: 0 24px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
+        }
+        .photo-frame img.profile {
+          position: absolute; inset: 0;
+          width: 100%; height: 100%;
+          object-fit: cover;
+          z-index: 1;
+        }
+        .photo-label {
+          position: absolute; inset: auto 0 0 0;
+          padding: 14px 16px;
+          font-family: var(--font-mono);
+          font-size: 11px;
+          color: var(--ink-mute);
+          letter-spacing: 0.08em;
+          background: linear-gradient(180deg, transparent, rgba(0,0,0,0.55));
+          display: flex; justify-content: space-between; align-items: center;
+          z-index: 2;
+        }
+        .photo-frame::before,
+        .photo-frame::after,
+        .photo-corners::before,
+        .photo-corners::after {
+          content: "";
+          position: absolute; width: 14px; height: 14px;
+          border: 1px solid var(--moon);
+          opacity: 0.7;
+          z-index: 2;
+        }
+        .photo-frame::before { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+        .photo-frame::after  { top: 10px; right: 10px; border-left: 0; border-bottom: 0; }
+        .photo-corners::before { bottom: 10px; left: 10px; border-right: 0; border-top: 0; }
+        .photo-corners::after  { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+        .name {
+          font-family: var(--font-sans);
+          font-weight: 600;
+          font-size: clamp(40px, 6vw, 76px);
+          letter-spacing: -0.025em;
+          line-height: 1;
+          margin: 0 0 14px;
+        }
+        .name .accent { color: var(--moon); }
+        .role-line {
+          font-family: var(--font-mono);
+          font-size: 13px;
+          color: var(--ink-soft);
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          margin-bottom: 28px;
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .pulse-dot {
+          width: 8px; height: 8px; border-radius: 999px;
+          background: var(--leaf);
+          box-shadow: 0 0 0 0 rgba(111,191,143,0.7);
+          animation: pulse 2s infinite;
+          flex-shrink: 0;
+        }
+        @keyframes pulse {
+          0%   { box-shadow: 0 0 0 0 rgba(111,191,143,0.5); }
+          70%  { box-shadow: 0 0 0 10px rgba(111,191,143,0); }
+          100% { box-shadow: 0 0 0 0 rgba(111,191,143,0); }
+        }
+        p.bio {
+          color: var(--ink);
+          font-size: 18px;
+          margin: 0 0 18px;
+          max-width: 56ch;
+        }
+        p.bio.dim { color: var(--ink-soft); font-size: 16px; }
+        .meta-grid {
+          margin-top: 36px;
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 18px;
+          font-family: var(--font-mono);
+          font-size: 12px;
+        }
+        @media (max-width: 600px) { .meta-grid { grid-template-columns: 1fr 1fr; } }
+        .meta-cell {
+          border: 1px solid var(--line-2);
+          background: rgba(13,20,40,0.4);
+          padding: 14px 14px 12px;
+          border-radius: 2px;
+        }
+        .meta-k { color: var(--ink-mute); letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; }
+        .meta-v { color: var(--ink); margin-top: 4px; font-size: 14px; }
 
-        {/* Painel esquerdo — identidade */}
-        <div
-          className="rounded-[32px] p-6 backdrop-blur flex flex-col items-center text-center lg:items-start lg:text-left"
-          style={{
-            border: "1px solid var(--border)",
-            background: "var(--background-elevated)",
-            boxShadow: "var(--shadow-card)",
-          }}
-        >
-          <div
-            className="relative h-28 w-28 rounded-full overflow-hidden"
-            style={{ border: "2px solid var(--border-accent)" }}
-          >
-            <Image
-              src="https://avatars.githubusercontent.com/MrRafha?size=200"
-              alt="Foto de perfil de Rafhael Hanry"
-              fill
-              className="object-cover"
-              sizes="112px"
-            />
-          </div>
+        /* reveal */
+        .reveal {
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity 700ms ease, transform 700ms ease;
+        }
+        .reveal.in { opacity: 1; transform: none; }
+      `}</style>
 
-          <h2
-            className="mt-4 text-2xl font-bold"
-            style={{ color: "var(--foreground)" }}
-          >
-            {profile.name}
-          </h2>
-          <p
-            className="mt-1 text-xs uppercase tracking-[0.18em]"
-            style={{ color: "var(--foreground-subtle)" }}
-          >
-            {profile.role}
-          </p>
-
-          <div className="mt-5 w-full h-px" style={{ background: "var(--border)" }} />
-
-          <div className="mt-5 flex flex-col gap-3 w-full">
-            {/* Status de disponibilidade */}
-            <div
-              className="flex items-center gap-2.5 rounded-xl px-3 py-2"
-              style={{ background: "var(--accent-bg)", border: "1px solid var(--border-accent)" }}
-            >
-              <span className="relative flex h-2.5 w-2.5 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
-              </span>
-              <span className="text-xs font-medium" style={{ color: "var(--foreground-muted)" }}>
-                Disponível para projetos
-              </span>
-            </div>
-
-            {/* Localização */}
-            <div className="flex items-center gap-2.5 px-1">
-              <svg
-                className="h-4 w-4 shrink-0"
-                style={{ color: "var(--foreground-subtle)" }}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span className="text-xs" style={{ color: "var(--foreground-subtle)" }}>
-                Brasil, Piauí
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Painel direito — bio e stats */}
-        <div
-          className="rounded-[32px] p-6 backdrop-blur flex flex-col justify-between gap-6"
-          style={{
-            border: "1px solid var(--border)",
-            background: "linear-gradient(160deg, var(--accent-bg) 0%, var(--background-elevated) 100%)",
-            boxShadow: "var(--shadow-card)",
-          }}
-        >
-          <div>
-            <p
-              className="text-xs font-medium uppercase tracking-[0.24em]"
-              style={{ color: "var(--accent-soft)" }}
-            >
-              Sobre
-            </p>
-            <p
-              className="mt-4 text-base leading-relaxed"
-              style={{ color: "var(--foreground-muted)" }}
-            >
-              {profile.headline}
-            </p>
-            <p
-              className="mt-4 text-base leading-relaxed"
-              style={{ color: "var(--foreground-muted)" }}
-            >
-              {profile.description}
-            </p>
-          </div>
-
-          {/* Stats grid */}
-          <div className="grid grid-cols-2 gap-3">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-xl p-3"
-                style={{
-                  border: "1px solid var(--border)",
-                  background: "var(--glass-bg)",
-                }}
-              >
-                <p
-                  className="text-xs uppercase tracking-wide"
-                  style={{ color: "var(--foreground-subtle)" }}
-                >
-                  {stat.label}
-                </p>
-                <p
-                  className="mt-1 text-sm font-semibold"
-                  style={{ color: "var(--foreground)" }}
-                >
-                  {stat.value}
-                </p>
+      <section className="panel" id="sobre">
+        <div className="shell">
+          <div className="about-grid">
+            {/* Foto */}
+            <div className="photo-frame reveal">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="profile"
+                src="https://avatars.githubusercontent.com/MrRafha?size=600"
+                alt="Foto de perfil de Rafhael Hanry"
+              />
+              <div className="photo-corners" />
+              <div className="photo-label">
+                <span>rafhael.jpg</span>
+                <span>@MrRafha</span>
               </div>
-            ))}
+            </div>
+
+            {/* Bio */}
+            <div>
+              <div className="eyebrow reveal">01 — sobre</div>
+              <h1 className="name reveal">
+                Olá, eu sou <span className="accent">Rafhael Hanry</span>.
+              </h1>
+              <div className="role-line reveal">
+                <span className="pulse-dot" aria-hidden="true" />
+                Desenvolvedor Frontend · Disponível para projetos
+              </div>
+
+              <p className="bio reveal">
+                Interfaces que as pessoas entendem na primeira vez — do design ao deploy.
+              </p>
+              <p className="bio dim reveal">
+                Sou estudante de ADS com foco em frontend e experiência de produto.
+                Trabalho principalmente com React, Next.js, TypeScript, Prisma e Postgres,
+                criando soluções para projetos reais, comunidades digitais e aplicações
+                com base sólida para crescer.
+              </p>
+
+              <div className="meta-grid reveal">
+                <div className="meta-cell">
+                  <div className="meta-k">Localização</div>
+                  <div className="meta-v">Brasil — Piauí</div>
+                </div>
+                <div className="meta-cell">
+                  <div className="meta-k">Formato</div>
+                  <div className="meta-v">Freela · CLT · PJ</div>
+                </div>
+                <div className="meta-cell">
+                  <div className="meta-k">Resposta</div>
+                  <div className="meta-v">&lt; 24h</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

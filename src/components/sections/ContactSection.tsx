@@ -1,107 +1,83 @@
-import { profile } from "@/data/portfolio";
-import { SectionTitle } from "@/components/sections/SectionTitle";
-
-const contactOptions = [
-  {
-    title: "Email",
-    description: "Para propostas, freelas e oportunidades de trabalho.",
-    href: `mailto:${profile.email}`,
-    label: profile.email,
-    cta: "Enviar email",
-  },
-  {
-    title: "LinkedIn",
-    description: "Conexão profissional e networking de produto e frontend.",
-    href: profile.linkedin,
-    label: "Perfil no LinkedIn",
-    cta: "Abrir LinkedIn",
-  },
-  {
-    title: "GitHub",
-    description: "Repositórios, projetos ativos e histórico de evolução.",
-    href: profile.github,
-    label: "Perfil no GitHub",
-    cta: "Ver GitHub",
-  },
-];
-
 export function ContactSection() {
   return (
-    <section className="mx-auto w-full max-w-7xl px-6 py-8 pb-14 sm:px-8 lg:px-10">
-      <div
-        className="rounded-[36px] p-6 sm:p-8"
-        style={{
-          border: "1px solid var(--border)",
-          background:
-            "linear-gradient(135deg, var(--accent-bg) 0%, var(--background-elevated) 50%, var(--accent-bg) 100%)",
-        }}
-      >
-        <SectionTitle
-          eyebrow="Contato"
-          title="Vamos construir algo útil juntos"
-          description="Escolha o canal que fizer mais sentido para conversarmos sobre projeto, colaboração ou oportunidade de trabalho."
-        />
+    <>
+      <style>{`
+        .contact-section { text-align: left; }
+        .contact-section h2 {
+          font-size: clamp(48px, 8vw, 110px);
+          line-height: 0.95;
+          letter-spacing: -0.03em;
+          margin: 18px 0 28px;
+          font-weight: 600;
+        }
+        .contact-out { color: var(--moon); }
+        .contact-links {
+          display: flex; flex-wrap: wrap; gap: 14px;
+          margin-top: 16px;
+        }
+        .btn {
+          display: inline-flex; align-items: center; gap: 10px;
+          padding: 14px 22px;
+          border: 1px solid var(--line-2);
+          background: rgba(13,20,40,0.4);
+          color: var(--ink);
+          text-decoration: none;
+          font-family: var(--font-mono);
+          font-size: 13px;
+          letter-spacing: 0.06em;
+          transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+          border-radius: 2px;
+        }
+        .btn:hover {
+          background: rgba(255,255,255,0.06);
+          border-color: rgba(255,255,255,0.4);
+          transform: translateY(-1px);
+        }
+        .btn.primary { background: var(--moon); color: #1a1408; border-color: var(--moon); }
+        .btn.primary:hover { background: #fff5d8; }
+        .btn-glyph { font-size: 14px; }
+        footer.foot {
+          border-top: 1px solid var(--line);
+          padding: 28px 0 36px;
+          margin-top: 60px;
+          color: var(--ink-mute);
+          font-family: var(--font-mono);
+          font-size: 12px;
+          display: flex; justify-content: space-between;
+          flex-wrap: wrap; gap: 12px;
+        }
+      `}</style>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {contactOptions.map((option) => (
-            <article
-              key={option.title}
-              aria-labelledby={`contact-${option.title}`}
-              className="rounded-3xl p-5 backdrop-blur transition-all duration-300 hover:scale-[1.02]"
-              style={{
-                border: "1px solid var(--border)",
-                background: "var(--glass-bg)",
-                boxShadow: "var(--shadow-card)",
-              }}
-            >
-              <p
-                id={`contact-${option.title}`}
-                className="text-xs uppercase tracking-[0.2em]"
-                style={{ color: "var(--accent-soft)" }}
-              >
-                {option.title}
-              </p>
-              <p className="mt-3 text-sm leading-6" style={{ color: "var(--foreground-muted)" }}>
-                {option.description}
-              </p>
-              <p className="mt-4 text-sm font-medium" style={{ color: "var(--foreground)" }}>
-                {option.label}
-              </p>
-              <a
-                href={option.href}
-                target={option.href.startsWith("mailto:") ? undefined : "_blank"}
-                rel={option.href.startsWith("mailto:") ? undefined : "noreferrer"}
-                className="mt-5 inline-flex rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-[1.04]"
-                style={{
-                  border: "1px solid var(--border-accent)",
-                  background: "var(--accent-bg)",
-                  color: "var(--accent)",
-                }}
-              >
-                {option.cta}
-              </a>
-            </article>
-          ))}
-        </div>
-
-        <div
-          className="mt-8 pt-5 flex flex-wrap items-center justify-between gap-2"
-          style={{ borderTop: "1px solid var(--border)" }}
-        >
-          <p className="text-xs" style={{ color: "var(--foreground-subtle)" }}>
-            Disponível para freela · CLT · PJ · Resposta em até 24h
+      <section className="panel contact-section" id="contato">
+        <div className="shell">
+          <div className="eyebrow reveal">04 — contato</div>
+          <h2 className="reveal">
+            Vamos construir<br />
+            algo <span className="contact-out">útil</span> juntos.
+          </h2>
+          <p className="section-lede reveal">
+            Estou disponível para freela, colaboração ou oportunidade CLT/PJ.
+            Se você precisa de uma interface sólida, um produto funcional ou
+            quer tirar uma ideia do papel — vamos conversar.
           </p>
-          <a
-            href={profile.github}
-            target="_blank"
-            rel="noreferrer"
-            className="text-xs transition-opacity hover:opacity-70"
-            style={{ color: "var(--accent-soft)" }}
-          >
-            Ver repositório
-          </a>
+          <div className="contact-links reveal">
+            <a className="btn primary" href="mailto:Hanryrafhael@gmail.com">
+              <span className="btn-glyph">✉</span> Hanryrafhael@gmail.com
+            </a>
+            <a className="btn" href="https://github.com/MrRafha" target="_blank" rel="noopener noreferrer">
+              <span className="btn-glyph">↗</span> GitHub
+            </a>
+            <a className="btn" href="https://www.linkedin.com/in/rafhael-hanry-1b998126b/" target="_blank" rel="noopener noreferrer">
+              <span className="btn-glyph">↗</span> LinkedIn
+            </a>
+          </div>
+
+          <footer className="foot">
+            <span>© 2026 Rafhael Hanry — disponível para freela · CLT · PJ · resposta &lt; 24h.</span>
+            <span>v1.0 · portfólio</span>
+          </footer>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

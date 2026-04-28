@@ -1,192 +1,123 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
-import { projects } from "@/data/portfolio";
+const projects = [
+  {
+    idx: "01",
+    title: "Ultimate Tracker",
+    desc: "Ferramenta gratuita para gestão de comunidades de Albion Online — membros, atividade e suporte contínuo.",
+    stack: "Next · TS · Prisma · NeonDB",
+    year: "Em produção",
+    href: "https://www.ultimatetracker.xyz/",
+  },
+  {
+    idx: "02",
+    title: "Projeto IFala",
+    desc: "Frontend e construção de interfaces — colaboração em equipe e desenvolvimento com propósito prático.",
+    stack: "React · TypeScript · CSS",
+    year: "Em produção",
+    href: "https://ifala.cacor.ifpi.edu.br/",
+  },
+  {
+    idx: "03",
+    title: "Hello Kitty Water Reminder",
+    desc: "App mobile temático com foco em engajamento, consistência visual e experiência do usuário.",
+    stack: "Flutter · Dart · Mobile UI",
+    year: "Em dev",
+    href: "https://github.com/MrRafha/Hello-Kitty-Drink-Wather",
+  },
+  {
+    idx: "04",
+    title: "Automação para Discord",
+    desc: "Bots e ferramentas para gestão de eventos, moderação e integração com APIs externas.",
+    stack: "Python · SQLite · APIs",
+    year: "Em dev",
+    href: "https://github.com/MrRafha",
+  },
+];
 
 export function ProjectsSection() {
-  const [isInView, setIsInView] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  function scroll(direction: "left" | "right") {
-    const container = containerRef.current;
-    if (!container) return;
-    const firstChild = container.children[0] as HTMLElement;
-    const cardWidth = firstChild?.offsetWidth ?? 500;
-    container.scrollBy({ left: direction === "left" ? -cardWidth : cardWidth, behavior: "smooth" });
-  }
-
-  function scrollToIndex(index: number) {
-    const container = containerRef.current;
-    if (!container) return;
-    const child = container.children[index] as HTMLElement;
-    child?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-  }
-
-  // Seção em view via evento do SectionFlowTracker
-  useEffect(() => {
-    function onSectionSignal(event: Event) {
-      const detail = (event as CustomEvent).detail;
-      if (!detail) return;
-      if (detail.activeSection === "projetos") setIsInView(true);
-      else if (detail.activeSection === "stack" || detail.activeSection === "contato") setIsInView(false);
-    }
-    window.addEventListener("portfolio:section-signal", onSectionSignal as EventListener);
-    return () => window.removeEventListener("portfolio:section-signal", onSectionSignal as EventListener);
-  }, []);
-
-  // IntersectionObserver para rastrear slide visível e atualizar dots
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const idx = Array.from(container.children).indexOf(entry.target as HTMLElement);
-            if (idx !== -1) setActiveIndex(idx);
-          }
-        }
-      },
-      { root: container, threshold: 0.5 }
-    );
-
-    Array.from(container.children).forEach((child) => observer.observe(child));
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section data-flow-key="projetos" className="w-full px-6 py-8 sm:px-8 lg:px-10">
-      <div className="mx-auto max-w-7xl">
-        <div className="mx-auto max-w-3xl text-center flex items-center justify-center gap-4">
-          <div>
-            <p className="text-sm font-medium uppercase tracking-[0.24em]" style={{ color: "var(--accent-soft)" }}>
-              Projetos
-            </p>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ color: "var(--foreground)" }}>
-              Alguns projetos
-            </h2>
-          </div>
-          <span
-            className="self-end pb-1 text-sm font-mono"
-            style={{ color: "var(--foreground-subtle)" }}
-          >
-            {String(activeIndex + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
-          </span>
-        </div>
+    <>
+      <style>{`
+        .projects-list {
+          margin-top: 48px;
+          border-top: 1px solid var(--line-2);
+        }
+        .project-row {
+          display: grid;
+          grid-template-columns: 56px 1fr 200px 140px;
+          align-items: center;
+          gap: 24px;
+          padding: 28px 4px;
+          border-bottom: 1px solid var(--line-2);
+          transition: background 220ms ease, padding-left 220ms ease, padding-right 220ms ease;
+          cursor: pointer;
+          text-decoration: none;
+          color: inherit;
+        }
+        .project-row:hover {
+          background: rgba(18,27,53,0.5);
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+        @media (max-width: 800px) {
+          .project-row { grid-template-columns: 40px 1fr; }
+          .project-row .proj-stack,
+          .project-row .proj-year { display: none; }
+        }
+        .proj-idx {
+          font-family: var(--font-mono); color: var(--moon);
+          font-size: 13px; letter-spacing: 0.08em;
+        }
+        .proj-title { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; }
+        .proj-title small {
+          display: block; font-weight: 400; font-size: 14px;
+          color: var(--ink-soft); margin-top: 4px; letter-spacing: 0;
+        }
+        .proj-stack { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); }
+        .proj-year {
+          font-family: var(--font-mono); font-size: 13px;
+          color: var(--ink-mute); text-align: right;
+        }
+        .proj-arrow {
+          display: inline-block; margin-left: 10px;
+          transition: transform 220ms ease, color 220ms ease;
+        }
+        .project-row:hover .proj-arrow {
+          transform: translateX(4px); color: var(--moon);
+        }
+      `}</style>
 
-        <div className="mt-12 relative">
-          <div
-            ref={containerRef}
-            className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth hide-scrollbar"
-          >
-            {projects.map((project, index) => (
-              <div
-                key={project.title}
-                className="flex-shrink-0 w-full snap-start"
-                style={{ minWidth: "min(100%, 650px)" }}
-                aria-label={project.title}
+      <section className="panel" id="projetos">
+        <div className="shell">
+          <div className="eyebrow reveal">03 — projetos selecionados</div>
+          <h2 className="section-title reveal">Coisas que construí recentemente.</h2>
+          <p className="section-lede reveal">
+            Uma seleção de projetos que demonstram como penso em produto, código e detalhes.
+          </p>
+
+          <div className="projects-list">
+            {projects.map((p) => (
+              <a
+                key={p.idx}
+                className="project-row reveal"
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={p.title}
               >
-                <ProjectShowcase
-                  project={project}
-                  index={index}
-                  isActive={isInView}
-                  flowProgress={0}
-                  isCarousel={true}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Botões laterais — visíveis a partir de lg (sem gap) */}
-          <button
-            type="button"
-            onClick={() => scroll("left")}
-            className="hidden lg:flex absolute -left-2 top-1/2 -translate-y-1/2 -translate-x-full rounded-full p-3 transition-all duration-200 hover:scale-110 z-10"
-            style={{
-              border: "1px solid var(--border-strong)",
-              background: "var(--background-elevated)",
-              color: "var(--foreground)",
-              boxShadow: "var(--shadow-card)",
-            }}
-            aria-label="Scroll projetos para esquerda"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => scroll("right")}
-            className="hidden lg:flex absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full rounded-full p-3 transition-all duration-200 hover:scale-110 z-10"
-            style={{
-              border: "1px solid var(--border-strong)",
-              background: "var(--background-elevated)",
-              color: "var(--foreground)",
-              boxShadow: "var(--shadow-card)",
-            }}
-            aria-label="Scroll projetos para direita"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          {/* Botões mobile */}
-          <div className="mt-4 flex lg:hidden justify-center gap-2 mb-4">
-            <button
-              type="button"
-              onClick={() => scroll("left")}
-              className="rounded-lg p-2 transition-all duration-200 hover:scale-110"
-              style={{
-                border: "1px solid var(--border-strong)",
-                background: "var(--background-elevated)",
-                color: "var(--foreground)",
-              }}
-              aria-label="Scroll projetos para esquerda"
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => scroll("right")}
-              className="rounded-lg p-2 transition-all duration-200 hover:scale-110"
-              style={{
-                border: "1px solid var(--border-strong)",
-                background: "var(--background-elevated)",
-                color: "var(--foreground)",
-              }}
-              aria-label="Scroll projetos para direita"
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Dots — estado ativo rastreado pelo IntersectionObserver */}
-          <div className="mt-4 flex justify-center gap-2">
-            {projects.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => scrollToIndex(idx)}
-                className="h-2.5 rounded-full transition-all duration-300"
-                style={{
-                  width: idx === activeIndex ? "2rem" : "0.625rem",
-                  background: idx === activeIndex ? "var(--accent-soft)" : "var(--border-strong)",
-                }}
-                aria-label={`Ir para projeto ${idx + 1}`}
-              />
+                <span className="proj-idx">{p.idx} /</span>
+                <span className="proj-title">
+                  {p.title}
+                  <small>{p.desc}</small>
+                </span>
+                <span className="proj-stack">{p.stack}</span>
+                <span className="proj-year">
+                  {p.year} <span className="proj-arrow">→</span>
+                </span>
+              </a>
             ))}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

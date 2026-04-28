@@ -1,276 +1,56 @@
 @import "tailwindcss";
 
-/* ============================================================
-   TEMA ESCURO (padrão)
-   ============================================================ */
-:root,
-[data-theme="dark"] {
-  /* Fundos */
-  --background:          #0a0a0f;
-  --background-elevated: #11111a;
-  --background-surface:  #0f0f18;
-  --background-overlay:  #1a1a28;
-
-  /* Bordas */
-  --border:              rgba(255, 255, 255, 0.10);
-  --border-strong:       rgba(255, 255, 255, 0.18);
-  --border-accent:       rgba(88, 101, 242, 0.30);
-
-  /* Texto */
-  --foreground:          #f5f7ff;
-  --foreground-muted:    #c9cde0;
-  --foreground-subtle:   #9299b8;
-  --foreground-on-accent: #ffffff;
-
-  /* Accent (indigo) */
-  --accent:              #5865f2;
-  --accent-soft:         #a0a8ff;
-  --accent-bg:           rgba(88, 101, 242, 0.10);
-  --accent-bg-hover:     rgba(88, 101, 242, 0.18);
-  --accent-glow:         rgba(88, 101, 242, 0.22);
-
-  /* Glassmorphism */
-  --glass-bg:            rgba(17, 17, 26, 0.75);
-  --glass-bg-strong:     rgba(11, 11, 18, 0.82);
-
-  /* Sombras */
-  --shadow-card:  0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.25);
-  --shadow-float: 0 18px 45px rgba(88, 101, 242, 0.16), 0 0 0 1px rgba(88,101,242,0.25);
-  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.35);
-
-  /* Gradiente do body */
-  --body-gradient:
-    radial-gradient(circle at 10% 0%, rgba(88, 101, 242, 0.22), transparent 36%),
-    radial-gradient(circle at 90% 16%, rgba(160, 168, 255, 0.14), transparent 40%),
-    linear-gradient(180deg, #0a0a0f 0%, #0d0d14 45%, #0a0a0f 100%);
-
-  /* Navbar */
-  --navbar-bg: rgba(10, 10, 15, 0.75);
-}
-
-/* ============================================================
-   TEMA CLARO
-   ============================================================ */
-[data-theme="light"] {
-  /* Fundos */
-  --background:          #f4f5fb;
-  --background-elevated: #ffffff;
-  --background-surface:  #eef0f8;
-  --background-overlay:  #ffffff;
-
-  /* Bordas */
-  --border:              rgba(88, 101, 242, 0.12);
-  --border-strong:       rgba(88, 101, 242, 0.22);
-  --border-accent:       rgba(88, 101, 242, 0.40);
-
-  /* Texto */
-  --foreground:          #12131f;
-  --foreground-muted:    #4a4f6a;
-  --foreground-subtle:   #5f6890;
-  --foreground-on-accent: #ffffff;
-
-  /* Accent */
-  --accent:              #3d48d5;
-  --accent-soft:         #5865f2;
-  --accent-bg:           rgba(71, 82, 232, 0.08);
-  --accent-bg-hover:     rgba(71, 82, 232, 0.14);
-  --accent-glow:         rgba(71, 82, 232, 0.10);
-
-  /* Glassmorphism (frosted paper) */
-  --glass-bg:            rgba(255, 255, 255, 0.58);
-  --glass-bg-strong:     rgba(255, 255, 255, 0.88);
-
-  /* Sombras */
-  --shadow-card:  0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(88,101,242,0.07);
-  --shadow-float: 0 12px 36px rgba(71, 82, 232, 0.12), 0 0 0 1px rgba(71,82,232,0.18);
-  --shadow-hover: 0 6px 18px rgba(71, 82, 232, 0.14), 0 2px 6px rgba(0,0,0,0.06);
-
-  /* Gradiente do body */
-  --body-gradient:
-    radial-gradient(circle at 10% 0%, rgba(71, 82, 232, 0.08), transparent 36%),
-    radial-gradient(circle at 90% 16%, rgba(107, 117, 240, 0.06), transparent 40%),
-    linear-gradient(180deg, #f4f5fb 0%, #f0f1f9 45%, #f4f5fb 100%);
-
-  /* Navbar */
-  --navbar-bg: rgba(244, 245, 251, 0.80);
-}
-
-/* ============================================================
-   PREFERÊNCIA DO SISTEMA (quando não há data-theme definido)
-   ============================================================ */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --background:          #f4f5fb;
-    --background-elevated: #ffffff;
-    --background-surface:  #eef0f8;
-    --background-overlay:  #ffffff;
-    --border:              rgba(88, 101, 242, 0.12);
-    --border-strong:       rgba(88, 101, 242, 0.22);
-    --border-accent:       rgba(88, 101, 242, 0.40);
-    --foreground:          #12131f;
-    --foreground-muted:    #4a4f6a;
-    --foreground-subtle:   #5f6890;
-    --foreground-on-accent: #ffffff;
-    --accent:              #3d48d5;
-    --accent-soft:         #5865f2;
-    --accent-bg:           rgba(71, 82, 232, 0.08);
-    --accent-bg-hover:     rgba(71, 82, 232, 0.14);
-    --accent-glow:         rgba(71, 82, 232, 0.10);
-    --glass-bg:            rgba(255, 255, 255, 0.58);
-    --glass-bg-strong:     rgba(255, 255, 255, 0.88);
-    --shadow-card:  0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(88,101,242,0.07);
-    --shadow-float: 0 12px 36px rgba(71, 82, 232, 0.12), 0 0 0 1px rgba(71,82,232,0.18);
-    --shadow-hover: 0 6px 18px rgba(71, 82, 232, 0.14), 0 2px 6px rgba(0,0,0,0.06);
-    --body-gradient:
-      radial-gradient(circle at 10% 0%, rgba(71, 82, 232, 0.08), transparent 36%),
-      radial-gradient(circle at 90% 16%, rgba(107, 117, 240, 0.06), transparent 40%),
-      linear-gradient(180deg, #f4f5fb 0%, #f0f1f9 45%, #f4f5fb 100%);
-    --navbar-bg: rgba(244, 245, 251, 0.80);
-  }
-}
-
-/* ============================================================
-   TAILWIND THEME TOKENS
-   ============================================================ */
-@theme inline {
-  --color-background:          var(--background);
-  --color-background-elevated: var(--background-elevated);
-  --color-background-surface:  var(--background-surface);
-  --color-foreground:          var(--foreground);
-  --color-foreground-muted:    var(--foreground-muted);
-  --color-foreground-subtle:   var(--foreground-subtle);
-  --color-accent:              var(--accent);
-  --color-accent-soft:         var(--accent-soft);
-  --color-border:              var(--border);
-  --color-border-strong:       var(--border-strong);
+:root {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --bg-deep:   #0a1020;
+  --bg-base:   #0d1428;
+  --bg-elev:   #121b35;
+  --ink:       #e8ecf5;
+  --ink-soft:  #aab3c8;
+  --ink-mute:  #6b7591;
+  --line:      rgba(232,236,245,0.08);
+  --line-2:    rgba(232,236,245,0.14);
+
+  --moon:      #f3e9c4;
+  --leaf:      #6fbf8f;
+  --accent:    #8fb8ff;
+
+  --shell: min(1200px, 92vw);
 }
 
-/* ============================================================
-   BASE
-   ============================================================ */
-body {
-  background: var(--body-gradient);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), sans-serif;
-  min-height: 100vh;
-  overflow-x: clip;
-  transition: background 400ms ease, color 200ms ease;
-}
-
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
 html {
+  scroll-behavior: smooth;
   overflow-x: clip;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
 html::-webkit-scrollbar { display: none; }
 body::-webkit-scrollbar { display: none; }
 
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.hide-scrollbar::-webkit-scrollbar { display: none; }
-
-/* ============================================================
-   TRANSIÇÃO DE TEMA (aplicada apenas durante a troca)
-   ============================================================ */
-html.theme-transitioning *,
-html.theme-transitioning *::before,
-html.theme-transitioning *::after {
-  transition:
-    background-color 380ms cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 380ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 200ms ease,
-    box-shadow 380ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+body {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--bg-deep);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.55;
+  overflow-x: clip;
 }
 
-/* ============================================================
-   SCROLL PROGRESS BAR NA NAVBAR
-   ============================================================ */
-.scroll-progress-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
-  transform-origin: left;
-  transform: scaleX(var(--scroll-progress, 0));
-  transition: transform 80ms linear;
-}
+::selection { background: var(--moon); color: #1a1408; }
 
-/* ============================================================
-   SHIMMER SKELETON
-   ============================================================ */
-@keyframes shimmer {
-  0%   { background-position: 200% center; }
-  100% { background-position: -200% center; }
-}
-
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--background-surface) 25%,
-    var(--border-strong) 50%,
-    var(--background-surface) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.4s ease infinite;
-}
-
-/* ============================================================
-   BARRA DE PROFICIÊNCIA
-   ============================================================ */
-@keyframes growWidth {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-.proficiency-bar-fill {
-  transform-origin: left;
-  transform: scaleX(0);
-  transition: transform 800ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.proficiency-bar-fill.animated {
-  transform: scaleX(var(--proficiency, 0));
-}
-
-/* ============================================================
-   FOCUS VISIBLE GLOBAL
-   ============================================================ */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* ============================================================
-   FLOW SECTIONS
-   ============================================================ */
-[data-flow-section][data-flow-state="active"]  { --flow-accent-opacity: 1; }
-[data-flow-section][data-flow-state="next"]    { --flow-accent-opacity: 0.65; }
-[data-flow-section]                            { --flow-accent-opacity: 0; }
-
-[data-flow-section] {
-  transition: opacity 300ms ease, transform 300ms ease;
-  will-change: transform, opacity;
-}
-
-[data-flow-section][data-flow-state="active"]   { opacity: 1;   transform: translateY(0px); }
-[data-flow-section][data-flow-state="next"]     { opacity: 0.9; transform: translateY(14px); }
-[data-flow-section][data-flow-state="upcoming"] { opacity: 0.8; transform: translateY(20px); }
-[data-flow-section][data-flow-state="past"]     { opacity: 0.9; }
-
-/* ============================================================
-   REDUCED MOTION
-   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
